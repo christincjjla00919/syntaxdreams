@@ -3,7 +3,6 @@ import json
 import os
 import re
 import uuid
-import re
 
 import docker
 from docker.errors import APIError
@@ -36,12 +35,14 @@ logger = get_logger(__name__)
 
 def calculate_container_resources(gpu_ids: list[int]) -> tuple[str, int]:
     """Calculate memory limit and CPU limit based on GPU count.
+
     Returns:
         tuple: (memory_limit_str, cpu_limit_nanocpus)
     """
     num_gpus = len(gpu_ids)
     memory_limit = f"{num_gpus * cst.MEMORY_PER_GPU_GB}g"
     cpu_limit_nanocpus = num_gpus * cst.CPUS_PER_GPU * 1_000_000_000
+
     logger.info(f"Allocating resources for {num_gpus} GPUs: {memory_limit} memory, {num_gpus * cst.CPUS_PER_GPU} CPUs")
     return memory_limit, cpu_limit_nanocpus
 
@@ -337,7 +338,6 @@ async def upload_repo_to_hf(
             remove=False,
             name=container_name,
         )
-
 
         log_streaming_task = asyncio.create_task(asyncio.to_thread(stream_container_logs, container, get_all_context_tags()))
 
