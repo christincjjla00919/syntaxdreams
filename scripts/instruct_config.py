@@ -12,64 +12,64 @@ MODEL_CONFIG = {
 
 INSTRUCT_CONFIG = {
     "0_1_b": {
-        "lr": 0.0001,
+        "lr": 0.00016,
         "distributed": "ddp",
         "gpu_count": 1,
-        "batch_size": 140,
+        "batch_size": 100,
         "use_lora": False
     },
     "1_2_b": {
-        "lr": 0.0001,
+        "lr": 0.00018,
         "distributed": "ddp",
         "gpu_count": 1,
         "use_lora": False,
-        "batch_size": 100,
+        "batch_size": 80,
     },
     "2_4_b": {
-        "lr": 8e-5,
+        "lr": 1e-4,
         "distributed": "ddp",
         "gpu_count": 1,
-        "batch_size": 48,
-    },
-    "4_5_b": {
-        "lr": 6e-5,
-        "distributed": "ddp",
-        "gpu_count": 2,
         "batch_size": 40,
     },
-    "5_9_b": {
-        "lr": 4e-5,
+    "4_5_b": {
+        "lr": 1e-4,
         "distributed": "ddp",
         "gpu_count": 2,
         "batch_size": 30,
     },
+    "5_9_b": {
+        "lr": 2e-5,
+        "distributed": "ddp",
+        "gpu_count": 2,
+        "batch_size": 20,
+    },
     "9_12_b": {
-        "lr": 0.00015,
+        "lr": 0.0001,
         "distributed": "ddp",
         "gpu_count": 2,
         "use_lora": True,
-        "batch_size": 32,
+        "batch_size": 16,
     },
     "12_15_b": {
         "lr": 0.0001,
         "distributed": "ddp",
         "gpu_count": 4,
         "use_lora": True,
-        "batch_size": 20,
+        "batch_size": 10,
     },
     "15_40_b": {
-        "lr": 8e-5,
+        "lr": 4e-5,
         "distributed": "ds",
         "gpu_count": 4,
         "use_lora": True,
-        "batch_size": 10,
+        "batch_size": 8,
     },
     "40_80_b": {
-        "lr": 6e-5,
+        "lr": 3e-5,
         "distributed": "ds",
         "gpu_count": 8,
         "use_lora": True,
-        "batch_size": 6,
+        "batch_size": 4,
     }        
 }
 
@@ -112,6 +112,7 @@ def modify_config(axolotl_config: dict, model_name: str, model_architecture: str
     print(f"INSTRUCT CONFIG: {config}")
     axolotl_config["learning_rate"] = config["lr"]
     axolotl_config["micro_batch_size"] = config["batch_size"]
+    axolotl_config["gradient_accumulation_steps"] = 4
     if config.get("use_lora", False):
         axolotl_config["adapter"] = "lora"
         axolotl_config["lora_alpha"] = 512

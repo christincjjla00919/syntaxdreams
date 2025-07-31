@@ -1,25 +1,25 @@
 INSTRUCT_CONFIG = {
     "0_1_b": {
-        "lr": 1e-5,
+        "lr": 1e-4,
+        "distributed": "ddp",
+        "gpu_count": 1,
+        "batch_size": 20,
+    },
+    "1_2_b": {
+        "lr": 1e-4,
         "distributed": "ddp",
         "gpu_count": 1,
         "batch_size": 16,
     },
-    "1_2_b": {
-        "lr": 1e-5,
+    "2_4_b": {
+        "lr": 1e-4,
         "distributed": "ddp",
         "gpu_count": 1,
         "batch_size": 10,
-    },
-    "2_4_b": {
-        "lr": 1e-5,
-        "distributed": "ddp",
-        "gpu_count": 1,
-        "batch_size": 4,
         "use_lora": True
     },
     "4_5_b": {
-        "lr": 1e-5,
+        "lr": 1e-4,
         "distributed": "ddp",
         "gpu_count": 2,
         "batch_size": 4,
@@ -33,28 +33,28 @@ INSTRUCT_CONFIG = {
         "use_lora": True
     },
     "9_12_b": {
-        "lr": 8e-6,
+        "lr": 2e-5,
         "distributed": "ds",
         "gpu_count": 2,
         "use_lora": True,
         "batch_size": 4,
     },
     "12_15_b": {
-        "lr": 8e-6,
+        "lr": 1e-5,
         "distributed": "ds",
         "gpu_count": 4,
         "use_lora": True,
         "batch_size": 4,
     },
     "15_40_b": {
-        "lr": 8e-6,
+        "lr": 1e-5,
         "distributed": "ds",
         "gpu_count": 4,
         "use_lora": True,
         "batch_size": 2,
     },
     "40_80_b": {
-        "lr": 8e-6,
+        "lr": 1e-5,
         "distributed": "ds",
         "gpu_count": 8,
         "use_lora": True,
@@ -100,7 +100,7 @@ def modify_config(axolotl_config: dict, model_name: str, model_architecture: str
     config = get_instruct_config(param_nums)
     print(f"INSTRUCT CONFIG: {config}")
     axolotl_config["sample_packing"] = False
-    axolotl_config["gradient_accumulation_steps"] = 2
+    axolotl_config["gradient_accumulation_steps"] = 4
     axolotl_config["learning_rate"] = config["lr"]
     axolotl_config["micro_batch_size"] = config["batch_size"]
     if config.get("use_lora", False):
